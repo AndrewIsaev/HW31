@@ -10,6 +10,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 
+def index(request):
+    return JsonResponse({"status": "ok"}, status=200)
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 # Create your views here.
 class CategoryView(View):
@@ -42,6 +46,7 @@ class AdvertisementView(View):
         response: list = []
         for advertisement in advertisements:
             response.append({
+                "id": advertisement.id,
                 "name": advertisement.name,
                 "author": advertisement.author,
                 "price": advertisement.price,
@@ -56,6 +61,7 @@ class AdvertisementView(View):
         advertisement_data: dict = json.loads(request.body)
         advertisement: Advertisement = Advertisement.objects.create(**advertisement_data)
         return JsonResponse({
+            "id": advertisement.id,
             "name": advertisement.name,
             "author": advertisement.author,
             "price": advertisement.price,
@@ -75,6 +81,7 @@ class AdvertisementDetailView(DetailView):
             return JsonResponse({"error": "Not found"}, status=404)
 
         return JsonResponse({
+            "id": advertisement.id,
             "name": advertisement.name,
             "author": advertisement.author,
             "price": advertisement.price,
