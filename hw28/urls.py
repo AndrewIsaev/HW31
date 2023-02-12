@@ -1,4 +1,4 @@
-"""hw27 URL Configuration
+"""hw28 URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -20,8 +20,9 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
-    path('cat/', views.CategoryView.as_view()),
-    path('ad/', views.AdvertisementView.as_view()),
-    path('cat/<int:pk>/', views.CategoryDetailView.as_view()),
-    path('ad/<int:pk>/', views.AdvertisementDetailView.as_view()),
+    path('cat/', views.CategoryListView.as_view(), name="category_list"),
+    path('cat/create/', views.CategoryCreateView.as_view(), name="category_list"),
+    # path('ad/', views.AdvertisementView.as_view()),
+    path('cat/<int:pk>/', views.CategoryDetailView.as_view(), name="category_detail"),
+    # path('ad/<int:pk>/', views.AdvertisementDetailView.as_view()),
 ]
