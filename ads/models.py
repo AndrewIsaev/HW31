@@ -16,7 +16,7 @@ class Advertisement(models.Model):
     price: int = models.PositiveIntegerField()
     description: str = models.CharField(max_length=1000)
     is_published: bool = models.BooleanField()
-    image = models.ImageField()
+    image = models.ImageField(upload_to="images/")
     category_id = models.ForeignKey("ads.Category", on_delete=models.CASCADE)
 
     class Meta:
