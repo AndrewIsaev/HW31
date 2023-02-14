@@ -8,6 +8,9 @@ from django.views import generic
 from django.http import JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.core.paginator import Paginator
+
+from hw28 import settings
 
 
 def index(request):
@@ -97,10 +100,13 @@ class AdvertisementListView(generic.ListView):
     def get(self, request: HttpRequest, *args, **kwargs) -> JsonResponse:
         super().get(request, *args, **kwargs)
 
-        advertisements: QuerySet[Advertisement] = self.object_list
-        response: list = []
-        for advertisement in advertisements:
-            response.append({
+        paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
+        page_number = request.GET.get("page")
+        page_object = paginator.get_page(page_number)
+
+        advertisements: list = []
+        for advertisement in page_object:
+            advertisements.append({
                 "id": advertisement.id,
                 "name": advertisement.name,
                 "author_id": advertisement.author_id,
@@ -111,11 +117,15 @@ class AdvertisementListView(generic.ListView):
                 "category_id": advertisement.category_id,
             })
 
+        response = {
+            "items": advertisements,
+            "total": paginator.count,
+            "num_pages": paginator.num_pages
+        }
+
         return JsonResponse(response, safe=False, json_dumps_params={"ensure_ascii": False})
 
 
-#
-#
 class AdvertisementDetailView(generic.DetailView):
     model: Type[Advertisement] = Advertisement
 
@@ -155,13 +165,14 @@ class AdvertisementCreateView(generic.CreateView):
             "category_id": advertisement.category_id,
         }, json_dumps_params={"ensure_ascii": False})
 
+
 @method_decorator(csrf_exempt, name="dispatch")
 class AdvertisementUpdateView(generic.UpdateView):
     model = Advertisement
     fields = ["name", "author", "price", "description", "category"]
 
-    def patch(self, request, *args, **kwars):
-        super().post(request, *args, **kwars)
+    def patch(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
 
         advertisement_data: dict = json.loads(request.body)
         advertisement = self.get_object()
@@ -184,6 +195,7 @@ class AdvertisementUpdateView(generic.UpdateView):
             "category_id": advertisement.category_id,
         }, json_dumps_params={"ensure_ascii": False})
 
+
 @method_decorator(csrf_exempt, name="dispatch")
 class AdvertisementImageUpdateView(generic.UpdateView):
     model = Advertisement
@@ -205,6 +217,7 @@ class AdvertisementImageUpdateView(generic.UpdateView):
             "image": self.object.image.url if self.object.image else None,
             "category_id": self.object.category_id,
         }, json_dumps_params={"ensure_ascii": False})
+
 
 @method_decorator(csrf_exempt, name="dispatch")
 class AdvertisementDeleteView(generic.DeleteView):
