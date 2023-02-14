@@ -101,7 +101,7 @@ class AdvertisementListView(generic.ListView):
     def get(self, request: HttpRequest, *args, **kwargs) -> JsonResponse:
         super().get(request, *args, **kwargs)
 
-        self.object_list = self.object_list.order_by("-price")
+        self.object_list = self.object_list.select_related("author").order_by("-price")
         paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
         page_number = request.GET.get("page", 1)
         page_object = paginator.get_page(page_number)
@@ -112,6 +112,7 @@ class AdvertisementListView(generic.ListView):
                 "id": advertisement.id,
                 "name": advertisement.name,
                 "author_id": advertisement.author_id,
+                "author": advertisement.author.first_name,
                 "price": advertisement.price,
                 "description": advertisement.description,
                 "is_published": advertisement.is_published,
