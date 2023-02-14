@@ -92,6 +92,8 @@ class CategoryDeleteView(generic.DeleteView):
 
 
 class AdvertisementListView(generic.ListView):
+    model = Advertisement
+
     def get(self, request: HttpRequest, *args, **kwargs) -> JsonResponse:
         super().get(request, *args, **kwargs)
 
@@ -105,7 +107,7 @@ class AdvertisementListView(generic.ListView):
                 "price": advertisement.price,
                 "description": advertisement.description,
                 "is_published": advertisement.is_published,
-                "image": advertisement.image,
+                "image": advertisement.image.url if advertisement.image else None,
                 "category_id": advertisement.category_id,
             })
 
@@ -135,7 +137,7 @@ class AdvertisementDetailView(generic.DetailView):
 @method_decorator(csrf_exempt, name="dispatch")
 class AdvertisementCreateView(generic.CreateView):
     model = Advertisement
-    fields = ["id", "name", "author_id", "price", "description", "is_published", "image", "category_id"]
+    fields = ["name", "author", "price", "description", "is_published", "image", "category"]
 
     def post(self, request: HttpRequest, *args, **kwargs) -> JsonResponse:
         super().post(request, *args, **kwargs)
@@ -149,14 +151,14 @@ class AdvertisementCreateView(generic.CreateView):
             "price": advertisement.price,
             "description": advertisement.description,
             "is_published": advertisement.is_published,
-            "image": advertisement.image,
+            "image": advertisement.image.url if advertisement.image else None,
             "category_id": advertisement.category_id,
         }, json_dumps_params={"ensure_ascii": False})
 
-
+@method_decorator(csrf_exempt, name="dispatch")
 class AdvertisementUpdateView(generic.UpdateView):
     model = Advertisement
-    fields = ["name", "author_id", "price", "description", "category_id"]
+    fields = ["name", "author", "price", "description", "category"]
 
     def patch(self, request, *args, **kwars):
         super().post(request, *args, **kwars)
@@ -169,19 +171,20 @@ class AdvertisementUpdateView(generic.UpdateView):
         advertisement.description = advertisement_data["description"]
         advertisement.category_id = advertisement_data["category_id"]
 
-        self.object.save()
+        advertisement.save()
         return JsonResponse({
             "id": advertisement.id,
             "name": advertisement.name,
             "author_id": advertisement.author_id,
+            "author": advertisement.author.first_name,
             "price": advertisement.price,
             "description": advertisement.description,
             "is_published": advertisement.is_published,
-            "image": advertisement.image,
+            "image": advertisement.image.url if advertisement.image else None,
             "category_id": advertisement.category_id,
         }, json_dumps_params={"ensure_ascii": False})
 
-
+@method_decorator(csrf_exempt, name="dispatch")
 class AdvertisementDeleteView(generic.DeleteView):
     model = Advertisement
 

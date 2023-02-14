@@ -14,7 +14,7 @@ class User(models.Model):
     password: str = models.CharField(max_length=50)
     role: str = models.CharField(max_length=50, choices=ROLE, default="member")
     age: int = models.PositiveSmallIntegerField()
-    location_id: int = models.ForeignKey("users.Location", on_delete=models.CASCADE)
+    location: int = models.ForeignKey("users.Location", on_delete=models.CASCADE)
 
 
 class Location(models.Model):

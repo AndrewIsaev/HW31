@@ -28,7 +28,6 @@ urlpatterns = [
     path('cat/<int:pk>/update/', views.CategoryUpdateView.as_view(), name="category_update"),
     path('cat/<int:pk>/delete/', views.CategoryDeleteView.as_view(), name="category_delete"),
 
-
     path('ad/', views.AdvertisementListView.as_view(), name="ad_list"),
     path('ad/create/', views.AdvertisementCreateView.as_view(), name="ad_create"),
     path('ad/<int:pk>/', views.AdvertisementDetailView.as_view(), name="ad_detail"),
@@ -36,4 +35,4 @@ urlpatterns = [
     path('ad/<int:pk>/delete/', views.AdvertisementDeleteView.as_view(), name="ad_delete"),
 ]
 if settings.DEBUG:
-    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

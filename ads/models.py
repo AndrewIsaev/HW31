@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 # Create your models here.
 class Category(models.Model):
@@ -12,12 +14,12 @@ class Category(models.Model):
 
 class Advertisement(models.Model):
     name: str = models.CharField(max_length=200)
-    author_id: str = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    author: str = models.ForeignKey(User, on_delete=models.CASCADE)
     price: int = models.PositiveIntegerField()
     description: str = models.CharField(max_length=1000)
     is_published: bool = models.BooleanField()
     image = models.ImageField(upload_to="images/")
-    category_id = models.ForeignKey("ads.Category", on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Объявление"
