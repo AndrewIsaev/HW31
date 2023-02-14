@@ -24,7 +24,8 @@ class CategoryListView(generic.ListView):
     def get(self, request: HttpRequest, *args, **kwargs) -> JsonResponse:
         super().get(request, *args, **kwargs)
 
-        categories: QuerySet[Category] = self.object_list
+        categories: QuerySet[Category] = self.object_list.order_by("name")
+
 
         response: list = []
         for category in categories:
@@ -100,8 +101,9 @@ class AdvertisementListView(generic.ListView):
     def get(self, request: HttpRequest, *args, **kwargs) -> JsonResponse:
         super().get(request, *args, **kwargs)
 
+        self.object_list = self.object_list.order_by("-price")
         paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
-        page_number = request.GET.get("page")
+        page_number = request.GET.get("page", 1)
         page_object = paginator.get_page(page_number)
 
         advertisements: list = []
