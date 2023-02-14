@@ -33,6 +33,7 @@ urlpatterns = [
     path('ad/<int:pk>/', views.AdvertisementDetailView.as_view(), name="ad_detail"),
     path('ad/<int:pk>/update/', views.AdvertisementUpdateView.as_view(), name="ad_update"),
     path('ad/<int:pk>/delete/', views.AdvertisementDeleteView.as_view(), name="ad_delete"),
+    path('ad/<int:pk>/upload_image/', views.AdvertisementImageUpdateView.as_view(), name="ad_update_image"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

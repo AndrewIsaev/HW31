@@ -185,6 +185,28 @@ class AdvertisementUpdateView(generic.UpdateView):
         }, json_dumps_params={"ensure_ascii": False})
 
 @method_decorator(csrf_exempt, name="dispatch")
+class AdvertisementImageUpdateView(generic.UpdateView):
+    model = Advertisement
+    fields = ["image"]
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.image = request.FILES["image"]
+        self.object.save()
+
+        return JsonResponse({
+            "id": self.object.id,
+            "name": self.object.name,
+            "author_id": self.object.author_id,
+            "author": self.object.author.first_name,
+            "price": self.object.price,
+            "description": self.object.description,
+            "is_published": self.object.is_published,
+            "image": self.object.image.url if self.object.image else None,
+            "category_id": self.object.category_id,
+        }, json_dumps_params={"ensure_ascii": False})
+
+@method_decorator(csrf_exempt, name="dispatch")
 class AdvertisementDeleteView(generic.DeleteView):
     model = Advertisement
 
