@@ -14,7 +14,9 @@ class User(models.Model):
     password: str = models.CharField(max_length=50)
     role: str = models.CharField(max_length=50, choices=ROLE, default="member")
     age: int = models.PositiveSmallIntegerField()
-    location: int = models.ForeignKey("users.Location", on_delete=models.CASCADE)
+    locations: int = models.ManyToManyField("users.Location")
+
+
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
@@ -23,8 +25,8 @@ class User(models.Model):
 
 class Location(models.Model):
     name: str = models.CharField(max_length=250)
-    lat: float = models.DecimalField(max_digits=10, decimal_places=6)
-    lng: float = models.DecimalField(max_digits=10, decimal_places=6)
+    lat: float = models.DecimalField(max_digits=10, decimal_places=6, null=True)
+    lng: float = models.DecimalField(max_digits=10, decimal_places=6, null=True)
 
     class Meta:
         verbose_name = "Локация"

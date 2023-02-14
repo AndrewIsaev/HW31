@@ -3,7 +3,6 @@ from typing import Type
 
 from ads.models import Category, Advertisement
 from django.db.models import QuerySet
-from django.views import View
 from django.views import generic
 from django.http import JsonResponse, HttpRequest
 from django.views.decorators.csrf import csrf_exempt
