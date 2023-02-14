@@ -15,9 +15,17 @@ class User(models.Model):
     role: str = models.CharField(max_length=50, choices=ROLE, default="member")
     age: int = models.PositiveSmallIntegerField()
     location: int = models.ForeignKey("users.Location", on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+        ordering = ["username"]
 
 
 class Location(models.Model):
     name: str = models.CharField(max_length=250)
     lat: float = models.DecimalField(max_digits=10, decimal_places=6)
     lng: float = models.DecimalField(max_digits=10, decimal_places=6)
+
+    class Meta:
+        verbose_name = "Локация"
+        verbose_name_plural = "Локации"
