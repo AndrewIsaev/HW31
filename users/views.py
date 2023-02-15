@@ -2,9 +2,9 @@ import json
 
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import render
-from django.utils.decorators import method_decorator
+from django.db.models import Count, Q
 from django.views import generic
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from hw28 import settings
@@ -17,6 +17,9 @@ class UserListView(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
+        self.object_list = self.object_list.annotate(
+            total_ads=Count('advertisement', filter=Q(advertisement__is_published=True))).prefetch_related(
+            'locations').order_by('username')
         paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
         page_number = request.GET.get("page", 1)
         page_object = paginator.get_page(page_number)
@@ -30,7 +33,8 @@ class UserListView(generic.ListView):
                 "last_name": user.last_name,
                 "role": user.role,
                 "age": user.age,
-                "locations": list(user.locations.all().values_list("name", flat=True))
+                "locations": list(map(str, user.locations.all())),
+                "total_ads": user.total_ads
             })
 
         response = {
@@ -89,6 +93,7 @@ class UserCreateView(generic.CreateView):
             "locations": list(user.locations.all().values_list("name", flat=True))
         })
 
+
 @method_decorator(csrf_exempt, name="dispatch")
 class UserUpdateViews(generic.UpdateView):
     model = User
@@ -117,6 +122,7 @@ class UserUpdateViews(generic.UpdateView):
             "age": user.age,
             "locations": list(user.locations.all().values_list("name", flat=True))
         })
+
 
 @method_decorator(csrf_exempt, name="dispatch")
 class UserDeleteView(generic.DeleteView):
