@@ -15,8 +15,7 @@ Including another URLconf
 """
 
 from ads import views
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from django.conf.urls.static import static
 
 from hw28 import settings

@@ -8,25 +8,26 @@ class User(models.Model):
         ("moderator", "модератор"),
         ("member", "участник"),
     ]
-    first_name: str = models.CharField(max_length=50)
-    last_name: str = models.CharField(max_length=50)
-    username: str = models.CharField(max_length=50)
-    password: str = models.CharField(max_length=50)
-    role: str = models.CharField(max_length=50, choices=ROLE, default="member")
-    age: int = models.PositiveSmallIntegerField()
-    locations: int = models.ManyToManyField("users.Location")
-
+    first_name: models.CharField = models.CharField(max_length=50)
+    last_name: models.CharField = models.CharField(max_length=50)
+    username: models.CharField = models.CharField(max_length=50)
+    password: models.CharField = models.CharField(max_length=50)
+    role: models.CharField = models.CharField(max_length=50, choices=ROLE, default="member")
+    age: models.PositiveSmallIntegerField = models.PositiveSmallIntegerField()
+    locations: models.ManyToManyField = models.ManyToManyField("users.Location")
 
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
         ordering = ["username"]
 
+    def __str__(self):
+        return f"{self.username}"
 
 class Location(models.Model):
-    name: str = models.CharField(max_length=250)
-    lat: float = models.DecimalField(max_digits=10, decimal_places=6, null=True)
-    lng: float = models.DecimalField(max_digits=10, decimal_places=6, null=True)
+    name: models.CharField = models.CharField(max_length=250)
+    lat: models.DecimalField = models.DecimalField(max_digits=10, decimal_places=6, null=True)
+    lng: models.DecimalField = models.DecimalField(max_digits=10, decimal_places=6, null=True)
 
     class Meta:
         verbose_name = "Локация"

@@ -17,9 +17,11 @@ class UserListView(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, **kwargs)
+
         self.object_list = self.object_list.annotate(
             total_ads=Count('advertisement', filter=Q(advertisement__is_published=True))).prefetch_related(
             'locations').order_by('username')
+
         paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
         page_number = request.GET.get("page", 1)
         page_object = paginator.get_page(page_number)
@@ -50,7 +52,9 @@ class UserDetailView(generic.DetailView):
     model = User
 
     def get(self, request, *args, **kwargs):
+
         self.object = self.get_object()
+
         return JsonResponse({
             "id": self.object.id,
             "username": self.object.username,
@@ -103,6 +107,7 @@ class UserUpdateViews(generic.UpdateView):
         super().post(request, *args, **kwargs)
 
         user_data = json.loads(request.body)
+
         user = self.get_object()
         user.username = user_data["username"]
         user.password = user_data["password"]
@@ -114,6 +119,7 @@ class UserUpdateViews(generic.UpdateView):
             location_obj, created = Location.objects.get_or_create(name=location)
             user.locations.add(location_obj)
         user.save()
+
         return JsonResponse({
             "id": user.id,
             "username": user.username,

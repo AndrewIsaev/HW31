@@ -141,7 +141,7 @@ class AdvertisementDetailView(generic.DetailView):
             "price": advertisement.price,
             "description": advertisement.description,
             "is_published": advertisement.is_published,
-            "image": advertisement.image,
+            "image": advertisement.image.url if advertisement.image else None,
             "category_id": advertisement.category_id,
         }, json_dumps_params={"ensure_ascii": False})
 
