@@ -89,10 +89,39 @@ class UserCreateView(generic.CreateView):
             "locations": list(user.locations.all().values_list("name", flat=True))
         })
 
+@method_decorator(csrf_exempt, name="dispatch")
+class UserUpdateViews(generic.UpdateView):
+    model = User
+    fields = ["username", "password", "first_name", "last_name", "age", "locations"]
 
+    def patch(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
+
+        user_data = json.loads(request.body)
+        user = self.get_object()
+        user.username = user_data["username"]
+        user.password = user_data["password"]
+        user.first_name = user_data["first_name"]
+        user.last_name = user_data["last_name"]
+        user.age = user_data["age"]
+
+        for location in user_data["locations"]:
+            location_obj, created = Location.objects.get_or_create(name=location)
+            user.locations.add(location_obj)
+        user.save()
+        return JsonResponse({
+            "id": user.id,
+            "username": user.username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "age": user.age,
+            "locations": list(user.locations.all().values_list("name", flat=True))
+        })
+
+@method_decorator(csrf_exempt, name="dispatch")
 class UserDeleteView(generic.DeleteView):
     model = User
-    success_url = ""
+    success_url = "/"
 
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)

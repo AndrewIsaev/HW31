@@ -224,7 +224,7 @@ class AdvertisementImageUpdateView(generic.UpdateView):
 @method_decorator(csrf_exempt, name="dispatch")
 class AdvertisementDeleteView(generic.DeleteView):
     model = Advertisement
-
+    success_url = "/"
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
 
