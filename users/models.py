@@ -24,6 +24,7 @@ class User(models.Model):
     def __str__(self):
         return f"{self.username}"
 
+
 class Location(models.Model):
     name: models.CharField = models.CharField(max_length=250)
     lat: models.DecimalField = models.DecimalField(max_digits=10, decimal_places=6, null=True)

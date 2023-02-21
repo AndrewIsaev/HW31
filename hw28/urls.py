@@ -21,11 +21,10 @@ from rest_framework import routers
 from users.views import LocationViewSet
 
 router = routers.SimpleRouter()
-router.register('location', LocationViewSet)
+router.register("location", LocationViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("ads.urls")),
     path('user/', include("users.urls")),
-
 ]
-urlpatterns+= router.urls
+urlpatterns += router.urls

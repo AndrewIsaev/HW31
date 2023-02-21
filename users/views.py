@@ -1,14 +1,7 @@
-import json
-
-from django.core.paginator import Paginator
-from django.http import JsonResponse
 from django.db.models import Count, Q
-from django.views import generic
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
-from hw28 import settings
 from users.models import User, Location
 from users.serializers import LocationSerializer, UserListSerializer, UserDetailSerializer, UserCreateSerializer, \
     UserUpdateSerializer, UserDeleteSerializer
