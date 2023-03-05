@@ -5,6 +5,10 @@ from rest_framework.serializers import ModelSerializer
 from ads.models import Advertisement, Category, Selection
 from users.models import User
 
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"
 
 class AdSerializer(ModelSerializer):
     author = serializers.SlugRelatedField(
@@ -19,7 +23,7 @@ class AdSerializer(ModelSerializer):
 
     class Meta:
         model = Advertisement
-        fields = "__all__"
+        exclude = ["image"]
 
 
 class AdDetailSerializer(ModelSerializer):

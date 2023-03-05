@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
+
+from ads.validtors import check_is_published
 from users.models import User
 
 
@@ -17,11 +19,11 @@ class Category(models.Model):
 
 
 class Advertisement(models.Model):
-    name: models.CharField = models.CharField(max_length=200)
+    name: models.CharField = models.CharField(max_length=200, null=False, validators=[MinLengthValidator(10)])
     author: models.ForeignKey = models.ForeignKey(User, on_delete=models.CASCADE)
     price: models.PositiveIntegerField = models.PositiveIntegerField()
-    description: models.CharField = models.CharField(max_length=1000)
-    is_published: models.BooleanField = models.BooleanField()
+    description: models.CharField = models.CharField(max_length=1000, null=True)
+    is_published: models.BooleanField = models.BooleanField(validators=[check_is_published])
     image: models.ImageField = models.ImageField(upload_to="images/")
     category: models.ForeignKey = models.ForeignKey(Category, on_delete=models.CASCADE)
 
