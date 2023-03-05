@@ -1,4 +1,4 @@
-"""hw28 URL Configuration
+"""hw31 URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -20,7 +20,7 @@ from django.urls import path
 from django.conf.urls.static import static
 
 from ads.views import AdViewSet
-from hw28 import settings
+from hw31 import settings
 
 ad_router = routers.SimpleRouter()
 ad_router.register("ad", AdViewSet)

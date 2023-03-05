@@ -1,5 +1,5 @@
 """
-ASGI config for hw28 project.
+ASGI config for hw31 project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hw28.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hw31.settings')
 
 application = get_asgi_application()

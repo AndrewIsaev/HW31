@@ -1,5 +1,5 @@
 """
-WSGI config for hw28 project.
+WSGI config for hw31 project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hw28.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hw31.settings')
 
 application = get_wsgi_application()
