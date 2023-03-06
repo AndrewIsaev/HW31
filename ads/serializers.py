@@ -35,7 +35,7 @@ class AdDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Advertisement
-        fields = "__all__"
+        exclude = ["image"]
 
 
 class SelectionListSerializer(serializers.ModelSerializer):

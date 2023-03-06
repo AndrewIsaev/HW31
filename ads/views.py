@@ -31,7 +31,7 @@ class AdViewSet(ModelViewSet):
 
     default_permission = [AllowAny]
     permissions = {
-        "retrieve": [IsAuthenticated, IsAdOwnerOrStaff],
+        "retrieve": [IsAuthenticated],
         "destroy": [IsAuthenticated, IsAdOwnerOrStaff]
     }
 
